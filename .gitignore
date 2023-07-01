@@ -1,2 +1,8 @@
+*.exe
+*.out
+
 .idea
 etc/test.env
+
+cloud-station.exe
+cloud-station
