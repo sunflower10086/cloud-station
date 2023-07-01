@@ -64,13 +64,16 @@ func TestBucketList(t *testing.T) {
 
 func TestUpLoadFile(t *testing.T) {
 
-	bucket, err := client.Bucket("my-bucket")
+	bucket, err := client.Bucket(Conf.BucketName)
 	if err != nil {
-		// HandleError(err)
+		t.Log(err)
 	}
 
-	err = bucket.PutObjectFromFile("my-object", "LocalFile")
+	// 上传文件到bucket
+	// 云商会根据key的路径结构自动的帮我们创建目录
+	// 第一个参数我们文件放在bucket中的对象的名字(包含路径)   myDir/test.go 自动创建myDir
+	err = bucket.PutObjectFromFile("mydir/test.go", "oss_test.go")
 	if err != nil {
-		// HandleError(err)
+		t.Log(err)
 	}
 }
