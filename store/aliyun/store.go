@@ -4,64 +4,19 @@ import (
 	"fmt"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/spf13/viper"
 	"github.com/sunflower10086/cloud-station/store"
 )
 
 var (
-	_    store.Uploader = &AliOssStore{}
-	Conf                = new(config)
+	_ store.Uploader = &AliOssStore{}
 )
 
 type AliOssStore struct {
 	client *oss.Client
 }
 
-type config struct {
-	AccessKeyId     string `mapstructure:"ALI_AK"`
-	AccessKeySecret string `mapstructure:"ALI_SK"`
-	OssEndpoint     string `mapstructure:"ALI_OSS_ENDPOINT"`
-	BucketName      string `mapstructure:"ALI_BUCKET_NAME"`
-}
-
-// 读取配置文件
-func readEnvFile() (*config, error) {
-	viper.SetConfigName("test")
-	viper.SetConfigType("env")
-
-	viper.AddConfigPath("./etc")     // 查找配置文件所在的目录
-	viper.AddConfigPath("../../etc") // 查找配置文件所在的目录
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// 配置文件未找到
-			fmt.Println("配置文件未找到")
-			return nil, err
-		} else {
-			// 其他错误
-			fmt.Println("加载配置文件错误")
-			return nil, err
-		}
-	}
-
-	var conf config
-
-	if err := viper.Unmarshal(&conf); err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return &conf, nil
-}
-
-func (c *config) validate() error {
-	if c.AccessKeyId == "" || c.AccessKeySecret == "" || c.OssEndpoint == "" {
-		return fmt.Errorf("access_key, secret_key, end_pointe has one empty")
-	}
-	return nil
-}
-
 func NewDefaultAliOssStore() (*AliOssStore, error) {
-	conf, err := readEnvFile()
+	conf, err := ReadEnvFile()
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil, err
@@ -69,8 +24,8 @@ func NewDefaultAliOssStore() (*AliOssStore, error) {
 	return NewAliOssStore(conf)
 }
 
-func NewAliOssStore(conf *config) (*AliOssStore, error) {
-	if err := conf.validate(); err != nil {
+func NewAliOssStore(conf *Config) (*AliOssStore, error) {
+	if err := conf.Validate(); err != nil {
 		return nil, err
 	}
 

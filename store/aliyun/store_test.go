@@ -20,7 +20,6 @@ var (
 // )
 
 func init() {
-	readEnvFile()
 	aliOssStore, err := NewDefaultAliOssStore()
 	if err != nil {
 		return
@@ -31,9 +30,9 @@ func init() {
 
 // Aliyun Oss Store 测试用例
 func TestUpLoad(t *testing.T) {
-
+	config, _ := ReadEnvFile()
 	should := assert.New(t)
-	err := uploader.Upload(Conf.BucketName, "test.txt", "store_test.go")
+	err := uploader.Upload(config.BucketName, "test.txt", "store_test.go")
 	if should.NoError(err) {
 		t.Log("upload ok")
 	}
