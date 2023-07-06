@@ -12,7 +12,8 @@ var (
 )
 
 type AliOssStore struct {
-	client *oss.Client
+	client      *oss.Client
+	aliOssStore *Config
 }
 
 func NewDefaultAliOssStore() (*AliOssStore, error) {
@@ -33,7 +34,7 @@ func NewAliOssStore(conf *Config) (*AliOssStore, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &AliOssStore{client: client}, nil
+	return &AliOssStore{client: client, aliOssStore: conf}, nil
 }
 
 func (a *AliOssStore) Upload(bucketName, objectKey, fileName string) error {
@@ -53,7 +54,9 @@ func (a *AliOssStore) Upload(bucketName, objectKey, fileName string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("文件下载url %s\n", downloadUrl)
-	fmt.Println("下载链接有效期一天，请在一天内下载")
+	fmt.Println("上传云商: 阿里云[oss-cn-beijing.aliyuncs.com]")
+	fmt.Printf("上传用户: [%s]\n", a.aliOssStore.OssEndpoint)
+	fmt.Printf("文件下载url: [%s]\n\n", downloadUrl)
+	fmt.Println("注意:下载链接有效期一天，请在一天内下载")
 	return nil
 }

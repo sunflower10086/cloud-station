@@ -1,6 +1,10 @@
 package tx
 
-import "github.com/sunflower10086/cloud-station/store"
+import (
+	"fmt"
+
+	"github.com/sunflower10086/cloud-station/store"
+)
 
 var (
 	_ store.Uploader = &TxOssStore{}
@@ -15,5 +19,6 @@ func (t *TxOssStore) Upload(bucketName, objectKey, fileName string) error {
 }
 
 func NewTxOssStore() (*TxOssStore, error) {
+	fmt.Println("tx function not impl")
 	return nil, nil
 }

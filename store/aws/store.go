@@ -1,6 +1,10 @@
 package aws
 
-import "github.com/sunflower10086/cloud-station/store"
+import (
+	"fmt"
+
+	"github.com/sunflower10086/cloud-station/store"
+)
 
 var (
 	_ store.Uploader = &AwsOssStore{}
@@ -15,5 +19,6 @@ func (t *AwsOssStore) Upload(bucketName, objectKey, fileName string) error {
 }
 
 func NewAwsOssStore() (*AwsOssStore, error) {
+	fmt.Println("aws function not impl")
 	return nil, nil
 }
