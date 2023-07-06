@@ -14,6 +14,7 @@ var (
 type AliOssStore struct {
 	client      *oss.Client
 	aliOssStore *Config
+	listener    oss.ProgressListener
 }
 
 func NewDefaultAliOssStore() (*AliOssStore, error) {
@@ -34,7 +35,11 @@ func NewAliOssStore(conf *Config) (*AliOssStore, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &AliOssStore{client: client, aliOssStore: conf}, nil
+	return &AliOssStore{
+		client:      client,
+		aliOssStore: conf,
+		listener:    &ProgressListener{},
+	}, nil
 }
 
 func (a *AliOssStore) Upload(bucketName, objectKey, fileName string) error {
@@ -45,7 +50,7 @@ func (a *AliOssStore) Upload(bucketName, objectKey, fileName string) error {
 	}
 
 	// 3.上传文件
-	if err := bucket.PutObjectFromFile(objectKey, fileName); err != nil {
+	if err := bucket.PutObjectFromFile(objectKey, fileName, oss.Progress(a.listener)); err != nil {
 		return err
 	}
 

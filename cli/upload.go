@@ -16,7 +16,7 @@ var (
 	accessKeyId     string
 	accessKeySecret string
 	bucketName      string
-	uploadFile      string
+	UploadFile      string
 )
 
 var UploadCmd = &cobra.Command{
@@ -50,7 +50,7 @@ var UploadCmd = &cobra.Command{
 			return nil
 		}
 		// 使用uploader上传文件
-		return uploader.Upload(bucketName, uploadFile, uploadFile)
+		return uploader.Upload(bucketName, UploadFile, UploadFile)
 	},
 }
 
@@ -61,6 +61,6 @@ func init() {
 	f.StringVarP(&accessKeyId, "AccessKeyId", "k", "", "oss storage provider AccessKeyId")
 	f.StringVarP(&accessKeySecret, "AccessKeySecret", "s", "", "oss storage provider AccessKeySecret")
 	f.StringVarP(&bucketName, "BucketName", "b", "lz-devcloud-station", "oss storage provider BucketName")
-	f.StringVarP(&uploadFile, "uploadFile", "f", "", "upload file name")
+	f.StringVarP(&UploadFile, "UploadFile", "f", "", "upload file name")
 	RootCmd.AddCommand(UploadCmd)
 }
