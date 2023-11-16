@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/k0kubun/go-ansi"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -15,7 +16,7 @@ func (p *ProgressListener) ProgressChanged(event *oss.ProgressEvent) {
 	switch event.EventType {
 	case oss.TransferStartedEvent:
 		p.bar = progressbar.NewOptions(int(event.TotalBytes),
-			//progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
+			progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
 			progressbar.OptionEnableColorCodes(true),
 			progressbar.OptionShowBytes(true),
 			progressbar.OptionSetWidth(15),
